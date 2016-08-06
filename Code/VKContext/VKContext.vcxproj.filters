@@ -1,0 +1,658 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="libzip Files">
+      <UniqueIdentifier>{5f671ef0-0426-4eb7-8238-393df45030eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libjpeg Files">
+      <UniqueIdentifier>{a4dc3ec0-deb9-45cd-a001-468e64bba36f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="linpng Files">
+      <UniqueIdentifier>{3afbebd7-c49a-4a07-986a-71ae75169aec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libsqlite3 Files">
+      <UniqueIdentifier>{e61fff06-38a7-4708-99db-7864f6fbdb20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib Files">
+      <UniqueIdentifier>{4db9a36b-5fd7-4d6e-8169-85ab9cf10d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VK Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="VK Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Vulkan Files">
+      <UniqueIdentifier>{0572913a-275e-4f98-9c74-e90e77679bd6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libsqlite3\sqlite3.h">
+      <Filter>libsqlite3 Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libzip\config.h">
+      <Filter>libzip Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libzip\zip.h">
+      <Filter>libzip Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libzip\zipint.h">
+      <Filter>libzip Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\cderror.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\cdjpeg.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jchuff.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jconfig.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jdct.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jdhuff.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jerror.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jinclude.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jmemsys.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jmorecfg.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jpegint.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jpeglib.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\jversion.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libjpeg\transupp.h">
+      <Filter>libjpeg Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpng\png.h">
+      <Filter>linpng Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpng\pngconf.h">
+      <Filter>linpng Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpng\pngdebug.h">
+      <Filter>linpng Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpng\pnginfo.h">
+      <Filter>linpng Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpng\pnglibconf.h">
+      <Filter>linpng Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpng\pngpriv.h">
+      <Filter>linpng Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libpng\pngstruct.h">
+      <Filter>linpng Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKSingleton.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKPath.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKTimer.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKCore.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKThread.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKLogger.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKProfiler.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKContext.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKDatabase.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKFont.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKGeometry.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKManager.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKMath.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKMatrix.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKNoise.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKPixelBuffer.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKQuaternion.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKShaderFile.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKShaderProgram.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKShaderTechnique.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKShape.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKString.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKTransform.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKVector.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKWindow.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vulkan\vk_platform.h">
+      <Filter>Vulkan Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vulkan\vulkan.h">
+      <Filter>Vulkan Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vulkan\VKFunctions.h">
+      <Filter>Vulkan Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vulkan\VKStruct.h">
+      <Filter>Vulkan Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKImage.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKRenderPass.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VKBufferObject.h">
+      <Filter>VK Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\libsqlite3\sqlite3.c">
+      <Filter>libsqlite3 Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_add.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_add_dir.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_close.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_delete.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_dirent.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_entry_free.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_entry_new.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_err_str.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_error.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_error_clear.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_error_get.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_error_get_sys_type.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_error_strerror.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_error_to_str.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_fclose.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_file_error_clear.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_file_error_get.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_file_get_offset.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_file_strerror.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_filerange_crc.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_fopen.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_fopen_index.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_fread.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_free.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_get_archive_comment.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_get_archive_flag.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_get_file_comment.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_get_name.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_get_num_files.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_memdup.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_name_locate.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_new.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_open.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_rename.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_replace.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_set_archive_comment.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_set_archive_flag.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_set_file_comment.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_set_name.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_source_buffer.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_source_file.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_source_filep.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_source_free.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_source_function.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_source_zip.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_stat.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_stat_index.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_stat_init.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_strerror.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_unchange.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_unchange_all.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_unchange_archive.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libzip\zip_unchange_data.c">
+      <Filter>libzip Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcapimin.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcapistd.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jccoefct.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jccolor.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcdctmgr.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jchuff.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcinit.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcmainct.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcmarker.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcmaster.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcomapi.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcparam.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcphuff.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcprepct.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jcsample.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jctrans.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdapimin.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdapistd.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdatadst.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdatasrc.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdcoefct.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdcolor.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jddctmgr.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdhuff.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdinput.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdmainct.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdmarker.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdmaster.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdmerge.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdphuff.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdpostct.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdsample.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jdtrans.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jerror.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jfdctflt.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jfdctfst.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jfdctint.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jidctflt.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jidctfst.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jidctint.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jidctred.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jmemansi.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jmemmgr.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\png.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngerror.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngget.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngmem.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngpread.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngread.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngrio.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngrtran.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngrutil.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngset.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngtrans.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngwio.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngwrite.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngwtran.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libpng\pngwutil.c">
+      <Filter>linpng Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jutils.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jquant1.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libjpeg\jquant2.c">
+      <Filter>libjpeg Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\adler32.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\compress.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\crc32.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\deflate.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzclose.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzlib.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzread.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\gzwrite.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\infback.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\inffast.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\inflate.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\inftrees.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\trees.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\uncompr.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\zlib\zutil.c">
+      <Filter>zlib Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKTimer.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKPath.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKLogger.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKProfiler.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKContext.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKDatabase.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKFont.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKManager.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKMath.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKNoise.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKPixelBuffer.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKShaderFile.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKShaderProgram.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKShaderTechnique.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKShape.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKWindow.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vulkan\VKFunctions.cpp">
+      <Filter>Vulkan Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKImage.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VKRenderPass.cpp">
+      <Filter>VK Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vulkan\VKFunctions.inl">
+      <Filter>Vulkan Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

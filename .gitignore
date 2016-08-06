@@ -1,0 +1,9 @@
+Build/images
+Build/log
+Build/obj
+Build/x64
+Build/x86
+*.db
+*.opendb
+.vs
+ipch

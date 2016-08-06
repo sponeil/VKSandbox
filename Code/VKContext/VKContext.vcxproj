@@ -1,0 +1,373 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7C6D8B5C-0F16-48A2-91C7-50D41A6D67CF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>VKContext</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Build\x86\</OutDir>
+    <IntDir>$(SolutionDir)Build\obj\$(ProjectName)\$(PlatformTarget)-$(Configuration)\</IntDir>
+    <TargetName>_D$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>_D$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)Build\x64\</OutDir>
+    <IntDir>$(SolutionDir)Build\obj\$(ProjectName)\$(PlatformTarget)-$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)Build\x86\</OutDir>
+    <IntDir>$(SolutionDir)Build\obj\$(ProjectName)\$(PlatformTarget)-$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Build\x64\</OutDir>
+    <IntDir>$(SolutionDir)Build\obj\$(ProjectName)\$(PlatformTarget)-$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\zlib;..\libzip;..\libsqlite3;..\libpng;..\libjpeg;..\squirrel</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\zlib;..\libzip;..\libsqlite3;..\libpng;..\libjpeg;..\squirrel</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\zlib;..\libzip;..\libsqlite3;..\libpng;..\libjpeg;..\squirrel</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\zlib;..\libzip;..\libsqlite3;..\libpng;..\libjpeg;..\squirrel</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libjpeg\cderror.h" />
+    <ClInclude Include="..\libjpeg\cdjpeg.h" />
+    <ClInclude Include="..\libjpeg\jchuff.h" />
+    <ClInclude Include="..\libjpeg\jconfig.h" />
+    <ClInclude Include="..\libjpeg\jdct.h" />
+    <ClInclude Include="..\libjpeg\jdhuff.h" />
+    <ClInclude Include="..\libjpeg\jerror.h" />
+    <ClInclude Include="..\libjpeg\jinclude.h" />
+    <ClInclude Include="..\libjpeg\jmemsys.h" />
+    <ClInclude Include="..\libjpeg\jmorecfg.h" />
+    <ClInclude Include="..\libjpeg\jpegint.h" />
+    <ClInclude Include="..\libjpeg\jpeglib.h" />
+    <ClInclude Include="..\libjpeg\jversion.h" />
+    <ClInclude Include="..\libjpeg\transupp.h" />
+    <ClInclude Include="..\libpng\png.h" />
+    <ClInclude Include="..\libpng\pngconf.h" />
+    <ClInclude Include="..\libpng\pngdebug.h" />
+    <ClInclude Include="..\libpng\pnginfo.h" />
+    <ClInclude Include="..\libpng\pnglibconf.h" />
+    <ClInclude Include="..\libpng\pngpriv.h" />
+    <ClInclude Include="..\libpng\pngstruct.h" />
+    <ClInclude Include="..\libsqlite3\sqlite3.h" />
+    <ClInclude Include="..\libzip\config.h" />
+    <ClInclude Include="..\libzip\zip.h" />
+    <ClInclude Include="..\libzip\zipint.h" />
+    <ClInclude Include="VKContext.h" />
+    <ClInclude Include="VKCore.h" />
+    <ClInclude Include="VKDatabase.h" />
+    <ClInclude Include="VKFont.h" />
+    <ClInclude Include="VKGeometry.h" />
+    <ClInclude Include="VKImage.h" />
+    <ClInclude Include="VKLogger.h" />
+    <ClInclude Include="VKManager.h" />
+    <ClInclude Include="VKMath.h" />
+    <ClInclude Include="VKMatrix.h" />
+    <ClInclude Include="VKNoise.h" />
+    <ClInclude Include="VKPath.h" />
+    <ClInclude Include="VKPixelBuffer.h" />
+    <ClInclude Include="VKProfiler.h" />
+    <ClInclude Include="VKQuaternion.h" />
+    <ClInclude Include="VKRenderPass.h" />
+    <ClInclude Include="VKShaderFile.h" />
+    <ClInclude Include="VKShaderProgram.h" />
+    <ClInclude Include="VKShaderTechnique.h" />
+    <ClInclude Include="VKShape.h" />
+    <ClInclude Include="VKSingleton.h" />
+    <ClInclude Include="VKString.h" />
+    <ClInclude Include="VKThread.h" />
+    <ClInclude Include="VKTimer.h" />
+    <ClInclude Include="VKTransform.h" />
+    <ClInclude Include="VKBufferObject.h" />
+    <ClInclude Include="VKVector.h" />
+    <ClInclude Include="VKWindow.h" />
+    <ClInclude Include="Vulkan\VKFunctions.h" />
+    <ClInclude Include="Vulkan\VKStruct.h" />
+    <ClInclude Include="Vulkan\vk_platform.h" />
+    <ClInclude Include="Vulkan\vulkan.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\libjpeg\jcapimin.c" />
+    <ClCompile Include="..\libjpeg\jcapistd.c" />
+    <ClCompile Include="..\libjpeg\jccoefct.c" />
+    <ClCompile Include="..\libjpeg\jccolor.c" />
+    <ClCompile Include="..\libjpeg\jcdctmgr.c" />
+    <ClCompile Include="..\libjpeg\jchuff.c" />
+    <ClCompile Include="..\libjpeg\jcinit.c" />
+    <ClCompile Include="..\libjpeg\jcmainct.c" />
+    <ClCompile Include="..\libjpeg\jcmarker.c" />
+    <ClCompile Include="..\libjpeg\jcmaster.c" />
+    <ClCompile Include="..\libjpeg\jcomapi.c" />
+    <ClCompile Include="..\libjpeg\jcparam.c" />
+    <ClCompile Include="..\libjpeg\jcphuff.c" />
+    <ClCompile Include="..\libjpeg\jcprepct.c" />
+    <ClCompile Include="..\libjpeg\jcsample.c" />
+    <ClCompile Include="..\libjpeg\jctrans.c" />
+    <ClCompile Include="..\libjpeg\jdapimin.c" />
+    <ClCompile Include="..\libjpeg\jdapistd.c" />
+    <ClCompile Include="..\libjpeg\jdatadst.c" />
+    <ClCompile Include="..\libjpeg\jdatasrc.c" />
+    <ClCompile Include="..\libjpeg\jdcoefct.c" />
+    <ClCompile Include="..\libjpeg\jdcolor.c" />
+    <ClCompile Include="..\libjpeg\jddctmgr.c" />
+    <ClCompile Include="..\libjpeg\jdhuff.c" />
+    <ClCompile Include="..\libjpeg\jdinput.c" />
+    <ClCompile Include="..\libjpeg\jdmainct.c" />
+    <ClCompile Include="..\libjpeg\jdmarker.c" />
+    <ClCompile Include="..\libjpeg\jdmaster.c" />
+    <ClCompile Include="..\libjpeg\jdmerge.c" />
+    <ClCompile Include="..\libjpeg\jdphuff.c" />
+    <ClCompile Include="..\libjpeg\jdpostct.c" />
+    <ClCompile Include="..\libjpeg\jdsample.c" />
+    <ClCompile Include="..\libjpeg\jdtrans.c" />
+    <ClCompile Include="..\libjpeg\jerror.c" />
+    <ClCompile Include="..\libjpeg\jfdctflt.c" />
+    <ClCompile Include="..\libjpeg\jfdctfst.c" />
+    <ClCompile Include="..\libjpeg\jfdctint.c" />
+    <ClCompile Include="..\libjpeg\jidctflt.c" />
+    <ClCompile Include="..\libjpeg\jidctfst.c" />
+    <ClCompile Include="..\libjpeg\jidctint.c" />
+    <ClCompile Include="..\libjpeg\jidctred.c" />
+    <ClCompile Include="..\libjpeg\jmemansi.c" />
+    <ClCompile Include="..\libjpeg\jmemmgr.c" />
+    <ClCompile Include="..\libjpeg\jquant1.c" />
+    <ClCompile Include="..\libjpeg\jquant2.c" />
+    <ClCompile Include="..\libjpeg\jutils.c" />
+    <ClCompile Include="..\libpng\png.c" />
+    <ClCompile Include="..\libpng\pngerror.c" />
+    <ClCompile Include="..\libpng\pngget.c" />
+    <ClCompile Include="..\libpng\pngmem.c" />
+    <ClCompile Include="..\libpng\pngpread.c" />
+    <ClCompile Include="..\libpng\pngread.c" />
+    <ClCompile Include="..\libpng\pngrio.c" />
+    <ClCompile Include="..\libpng\pngrtran.c" />
+    <ClCompile Include="..\libpng\pngrutil.c" />
+    <ClCompile Include="..\libpng\pngset.c" />
+    <ClCompile Include="..\libpng\pngtrans.c" />
+    <ClCompile Include="..\libpng\pngwio.c" />
+    <ClCompile Include="..\libpng\pngwrite.c" />
+    <ClCompile Include="..\libpng\pngwtran.c" />
+    <ClCompile Include="..\libpng\pngwutil.c" />
+    <ClCompile Include="..\libsqlite3\sqlite3.c" />
+    <ClCompile Include="..\libzip\zip_add.c" />
+    <ClCompile Include="..\libzip\zip_add_dir.c" />
+    <ClCompile Include="..\libzip\zip_close.c" />
+    <ClCompile Include="..\libzip\zip_delete.c" />
+    <ClCompile Include="..\libzip\zip_dirent.c" />
+    <ClCompile Include="..\libzip\zip_entry_free.c" />
+    <ClCompile Include="..\libzip\zip_entry_new.c" />
+    <ClCompile Include="..\libzip\zip_error.c" />
+    <ClCompile Include="..\libzip\zip_error_clear.c" />
+    <ClCompile Include="..\libzip\zip_error_get.c" />
+    <ClCompile Include="..\libzip\zip_error_get_sys_type.c" />
+    <ClCompile Include="..\libzip\zip_error_strerror.c" />
+    <ClCompile Include="..\libzip\zip_error_to_str.c" />
+    <ClCompile Include="..\libzip\zip_err_str.c" />
+    <ClCompile Include="..\libzip\zip_fclose.c" />
+    <ClCompile Include="..\libzip\zip_filerange_crc.c" />
+    <ClCompile Include="..\libzip\zip_file_error_clear.c" />
+    <ClCompile Include="..\libzip\zip_file_error_get.c" />
+    <ClCompile Include="..\libzip\zip_file_get_offset.c" />
+    <ClCompile Include="..\libzip\zip_file_strerror.c" />
+    <ClCompile Include="..\libzip\zip_fopen.c" />
+    <ClCompile Include="..\libzip\zip_fopen_index.c" />
+    <ClCompile Include="..\libzip\zip_fread.c" />
+    <ClCompile Include="..\libzip\zip_free.c" />
+    <ClCompile Include="..\libzip\zip_get_archive_comment.c" />
+    <ClCompile Include="..\libzip\zip_get_archive_flag.c" />
+    <ClCompile Include="..\libzip\zip_get_file_comment.c" />
+    <ClCompile Include="..\libzip\zip_get_name.c" />
+    <ClCompile Include="..\libzip\zip_get_num_files.c" />
+    <ClCompile Include="..\libzip\zip_memdup.c" />
+    <ClCompile Include="..\libzip\zip_name_locate.c" />
+    <ClCompile Include="..\libzip\zip_new.c" />
+    <ClCompile Include="..\libzip\zip_open.c" />
+    <ClCompile Include="..\libzip\zip_rename.c" />
+    <ClCompile Include="..\libzip\zip_replace.c" />
+    <ClCompile Include="..\libzip\zip_set_archive_comment.c" />
+    <ClCompile Include="..\libzip\zip_set_archive_flag.c" />
+    <ClCompile Include="..\libzip\zip_set_file_comment.c" />
+    <ClCompile Include="..\libzip\zip_set_name.c" />
+    <ClCompile Include="..\libzip\zip_source_buffer.c" />
+    <ClCompile Include="..\libzip\zip_source_file.c" />
+    <ClCompile Include="..\libzip\zip_source_filep.c" />
+    <ClCompile Include="..\libzip\zip_source_free.c" />
+    <ClCompile Include="..\libzip\zip_source_function.c" />
+    <ClCompile Include="..\libzip\zip_source_zip.c" />
+    <ClCompile Include="..\libzip\zip_stat.c" />
+    <ClCompile Include="..\libzip\zip_stat_index.c" />
+    <ClCompile Include="..\libzip\zip_stat_init.c" />
+    <ClCompile Include="..\libzip\zip_strerror.c" />
+    <ClCompile Include="..\libzip\zip_unchange.c" />
+    <ClCompile Include="..\libzip\zip_unchange_all.c" />
+    <ClCompile Include="..\libzip\zip_unchange_archive.c" />
+    <ClCompile Include="..\libzip\zip_unchange_data.c" />
+    <ClCompile Include="..\zlib\adler32.c" />
+    <ClCompile Include="..\zlib\compress.c" />
+    <ClCompile Include="..\zlib\crc32.c" />
+    <ClCompile Include="..\zlib\deflate.c" />
+    <ClCompile Include="..\zlib\gzclose.c" />
+    <ClCompile Include="..\zlib\gzlib.c" />
+    <ClCompile Include="..\zlib\gzread.c" />
+    <ClCompile Include="..\zlib\gzwrite.c" />
+    <ClCompile Include="..\zlib\infback.c" />
+    <ClCompile Include="..\zlib\inffast.c" />
+    <ClCompile Include="..\zlib\inflate.c" />
+    <ClCompile Include="..\zlib\inftrees.c" />
+    <ClCompile Include="..\zlib\trees.c" />
+    <ClCompile Include="..\zlib\uncompr.c" />
+    <ClCompile Include="..\zlib\zutil.c" />
+    <ClCompile Include="VKContext.cpp" />
+    <ClCompile Include="VKDatabase.cpp" />
+    <ClCompile Include="VKFont.cpp" />
+    <ClCompile Include="VKImage.cpp" />
+    <ClCompile Include="VKLogger.cpp" />
+    <ClCompile Include="VKManager.cpp" />
+    <ClCompile Include="VKMath.cpp" />
+    <ClCompile Include="VKNoise.cpp" />
+    <ClCompile Include="VKPath.cpp" />
+    <ClCompile Include="VKPixelBuffer.cpp" />
+    <ClCompile Include="VKProfiler.cpp" />
+    <ClCompile Include="VKRenderPass.cpp" />
+    <ClCompile Include="VKShaderFile.cpp" />
+    <ClCompile Include="VKShaderProgram.cpp" />
+    <ClCompile Include="VKShaderTechnique.cpp" />
+    <ClCompile Include="VKShape.cpp" />
+    <ClCompile Include="VKTimer.cpp" />
+    <ClCompile Include="VKWindow.cpp" />
+    <ClCompile Include="Vulkan\VKFunctions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Vulkan\VKFunctions.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
