@@ -1,0 +1,242 @@
+// GLManager.glfx - Text rendering techniques required by GL::Manager
+// This code is part of the GLContext library, an object-oriented class
+// library designed to make OpenGL 3.x easier to use with object-oriented
+// languages. It was designed and written by Sean O'Neil, who disclaims
+// any copyright to release it in the public domain.
+//
+#version 400
+#extension GL_ARB_separate_shader_objects : enable
+#extension GL_ARB_shading_language_420pack : enable
+
+#include "GLManager.h"
+#include "GLManager.glsl"
+
+// All shader programs using GLManager use this binding for scene data
+layout(std140, set=0, binding=0) uniform SceneBuffer {
+	SceneData scene;
+};
+
+layout(std140, set=1, binding=0) uniform GUIBuffer {
+	GUIData gui[MAX_GUI_INSTANCES];
+};
+
+layout(std140, set=2, binding=0) uniform TextBuffer {
+	TextData text[MAX_TEXT_INSTANCES];
+};
+
+
+technique Text3D {
+	state Enable BLEND;
+	state BlendSrc ONE;
+	state BlendDest ONE_MINUS_SRC_COLOR;
+	state Enable DEPTH_TEST;
+
+	layout(location=0) in vec3 attr0;
+	layout(location=0) frag vec4 vary0;
+	layout(location=0) out vec4 outColor;
+
+	Vertex {
+		vary0 = text[gl_InstanceIndex].vCharColor;
+		vec3 v = text[gl_InstanceIndex].vCharPos.xyz + attr0 * text[gl_InstanceIndex].vCharPos.www;
+		gl_Position = scene.mViewProj * vec4(v, 1.0);
+	}
+	Fragment {
+		outColor = vary0;
+	}
+}
+
+technique Text2D {
+	//state Enable BLEND;
+	//state BlendSrc SRC_ALPHA;
+	//state BlendDest ONE_MINUS_SRC_ALPHA;
+	state FrontFace CCW;
+	state CullFace BACK;
+	state Disable DEPTH_TEST;
+	//state PolygonMode LINE;
+
+	layout(location=0) in vec3 attr0;
+	layout(location=0) frag vec4 vary0;
+	layout(location=0) out vec4 outColor;
+
+	Vertex {
+		vary0 = text[gl_InstanceIndex].vCharColor;
+		vary0.w = (1.0-attr0.z);
+		vec2 v = text[gl_InstanceIndex].vCharPos.xy + attr0.xy * text[gl_InstanceIndex].vCharPos.ww;
+		gl_Position = scene.mOrtho * vec4(v, 0.0, 1.0);
+		gl_Position.y = -gl_Position.y;
+	}
+	Fragment {
+		outColor = vec4(vary0.xyz, 1) * cubic(vary0.w);
+	}
+}
+
+technique GUIBox {
+	state Disable DEPTH_TEST;
+	state Disable DEPTH_WRITE;
+	state Enable BLEND;
+	state BlendSrc SRC_ALPHA;
+	state BlendDest ONE_MINUS_SRC_ALPHA;
+	state FrontFace CCW;
+	state CullFace BACK;
+	//state PolygonMode LINE;
+
+	layout(location=0) frag vec4 vRect;
+	layout(location=1) frag vec4 vColor;
+	layout(location=2) frag vec4 vOptions;
+	layout(location=0) out vec4 outColor;
+
+	Vertex {
+		vColor = gui[gl_InstanceIndex].vGUIColor;
+		vRect = vec4(vSquare[iSquare[gl_VertexIndex]].xy, gui[gl_InstanceIndex].vGUIRect.zw);
+		vOptions = gui[gl_InstanceIndex].vGUIOptions;
+		vec2 v = gui[gl_InstanceIndex].vGUIRect.xy + vRect.xy * vRect.zw;
+		gl_Position = scene.mOrtho * vec4(v, 0.0, 1.0);
+		gl_Position.y = -gl_Position.y;
+	}
+	Fragment {
+		float corner = min(40.0, min(vRect.z, vRect.w)) * 0.5;
+		vec4 c = vColor;
+		vec2 v = vRect.xy * vRect.zw;
+		if(v.x < corner) v.x = v.x - corner;
+		else if(v.x > vRect.z - corner) v.x = v.x - (vRect.z - corner);
+		else v.x = 0.0;
+		if(v.y < corner) v.y = v.y - corner;
+		else if(v.y > vRect.w - corner) v.y = v.y - (vRect.w - corner);
+		else v.y = 0.0;
+		v /= vec2(corner,corner);
+		if(dot(v,v) > 1.0) c.a = 0.0;
+		outColor = c;
+	}
+}
+
+technique GUIBar {
+	state Disable DEPTH_TEST;
+	state Disable DEPTH_WRITE;
+	state Enable BLEND;
+	state BlendSrc SRC_ALPHA;
+	state BlendDest ONE_MINUS_SRC_ALPHA;
+	state FrontFace CCW;
+	state CullFace BACK;
+	//state PolygonMode LINE;
+
+	layout(location=0) frag vec4 vRect;
+	layout(location=1) frag vec4 vColor;
+	layout(location=2) frag vec4 vOptions;
+	layout(location=0) out vec4 outColor;
+
+	Vertex {
+		vColor = gui[gl_InstanceIndex].vGUIColor;
+		vRect = vec4(vSquare[iSquare[gl_VertexIndex]].xy, gui[gl_InstanceIndex].vGUIRect.zw);
+		vOptions = gui[gl_InstanceIndex].vGUIOptions;
+		vec2 v = gui[gl_InstanceIndex].vGUIRect.xy + vRect.xy * vRect.zw;
+		gl_Position = scene.mOrtho * vec4(v, 0.0, 1.0);
+		gl_Position.y = -gl_Position.y;
+	}
+	Fragment {
+		// For 100x20 radius is 10, so rounded caps start 10 from each end
+		float fRadius = vRect.w * 0.5;
+		vec4 c = vColor;
+		vec2 v = vRect.xy * vRect.zw;
+		if(v.x < fRadius) v.x = v.x - fRadius;
+		else if(v.x > vRect.z - fRadius) v.x = v.x - (vRect.z - fRadius);
+		else v.x = 0.0;
+		v.y -= fRadius;
+		v /= vec2(fRadius,fRadius);
+		float fWeight = dot(v,v);
+		if(fWeight >= 1.0) {
+			c.a = 0.0;
+		} else {
+			if(vOptions.x > 0.0)
+				c = c * pow(2.71, -vOptions.x*fWeight);
+			if(vOptions.y > 0.0)
+				c = c + (vec4(1.0, 1.0, 1.0, 1.0) - vColor) * pow(2.71, -vOptions.y*fWeight);
+		}
+		outColor = c;
+	}
+}
+
+technique GUIBubble {
+	state Disable DEPTH_TEST;
+	state Disable DEPTH_WRITE;
+	state Enable BLEND;
+	state BlendSrc SRC_ALPHA;
+	state BlendDest ONE_MINUS_SRC_ALPHA;
+	state FrontFace CCW;
+	state CullFace BACK;
+	//state PolygonMode LINE;
+
+	layout(location=0) frag vec4 vRect;
+	layout(location=1) frag vec4 vColor;
+	layout(location=2) frag vec4 vOptions;
+	layout(location=0) out vec4 outColor;
+
+	Vertex {
+		vColor = gui[gl_InstanceIndex].vGUIColor;
+		vRect = vec4(vSquare[iSquare[gl_VertexIndex]].xy, gui[gl_InstanceIndex].vGUIRect.zw);
+		vOptions = gui[gl_InstanceIndex].vGUIOptions;
+		vec2 v = gui[gl_InstanceIndex].vGUIRect.xy + vRect.xy * vRect.zw;
+		gl_Position = scene.mOrtho * vec4(v, 0.0, 1.0);
+		gl_Position.y = -gl_Position.y;
+	}
+	Fragment {
+		float ratio = vRect.z / vRect.w;
+		vec4 c = vColor;
+		vec2 v = vRect.xy * vec2(2.0,2.0) - vec2(1.0,1.0);
+		float f = dot(v, v);
+		float a = 0.0;
+		if(f < 1.0) {
+			if(vOptions.x > 0.0)
+				a += pow(2.71, -f*vOptions.x);
+			if(vOptions.y > 0.0)
+				a += pow(f, vOptions.y);
+			if(vOptions.z > 0.0)
+				a = a * vOptions.z + 1.0 - vOptions.z;
+		}
+		c.a *= a;
+		outColor = c;
+	}
+}
+
+technique GUIButton {
+	state Enable BLEND;
+	state BlendSrc SRC_ALPHA;
+	state BlendDest ONE_MINUS_SRC_ALPHA;
+	//state FrontFace CCW;
+	//state CullFace BACK;
+	state Disable DEPTH_TEST;
+	//state PolygonMode LINE;
+
+	layout(location=0) frag vec4 vRect;
+	layout(location=1) frag vec4 vColor;
+	layout(location=2) frag vec4 vOptions;
+	layout(location=0) out vec4 outColor;
+
+	Vertex {
+		vColor = gui[gl_InstanceIndex].vGUIColor;
+		vRect = vec4(vSquare[iSquare[gl_VertexIndex]].xy, gui[gl_InstanceIndex].vGUIRect.zw);
+		vOptions = gui[gl_InstanceIndex].vGUIOptions;
+		vec2 v = gui[gl_InstanceIndex].vGUIRect.xy + vRect.xy * vRect.zw;
+		gl_Position = scene.mOrtho * vec4(v, 0.0, 1.0);
+		gl_Position.y = -gl_Position.y;
+	}
+	Fragment {
+		mediump float ratio = vRect.z / vRect.w;
+		mediump vec4 c = vColor;
+		mediump vec2 v = vRect.xy * vRect.zw;
+		if(v.x < 7.5) v.x = v.x - 7.5;
+		else if(v.x > vRect.z - 7.5) v.x = v.x - (vRect.z - 7.5);
+		else v.x = 0.0;
+		if(v.y < 7.5) v.y = v.y - 7.5;
+		else if(v.y > vRect.w - 7.5) v.y = v.y - (vRect.w - 7.5);
+		else v.y = 0.0;
+		v /= vec2(7.5,7.5);
+
+		float f = 1.0 - dot(v, v);
+		c.a *= f;
+		c.a = floor(c.a*2.0);
+		if(v.x * vOptions.x > v.y * vOptions.x)
+			c.rgb *= vec3(f,f,f);
+		gl_FragColor = c;
+	}
+}
+

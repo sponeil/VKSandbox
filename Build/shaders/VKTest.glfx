@@ -1,0 +1,149 @@
+// GLManager.glfx - Text rendering techniques required by GL::Manager
+// This code is part of the GLContext library, an object-oriented class
+// library designed to make OpenGL 3.x easier to use with object-oriented
+// languages. It was designed and written by Sean O'Neil, who disclaims
+// any copyright to release it in the public domain.
+//
+#version 450
+//#extension GL_ARB_separate_shader_objects : enable
+//#extension GL_ARB_shading_language_420pack : enable
+
+#include "GLManager.h"
+#include "GLManager.glsl"
+#include "VKTest.h"
+#include "PerlinNoise.glsl"
+
+// All shader programs using GLManager use this binding for scene data
+layout(std140, set=0, binding=0) uniform SceneBuffer {
+	SceneData scene;
+};
+layout(std140, set=1, binding=0) uniform PlanetFaceBuffer {
+	PlanetFaceData face[MAX_LEVELS];
+};
+layout(set=2, binding=0) uniform sampler2DArray tex;
+
+layout(push_constant) uniform PushBlock {
+	vec4 plane;
+} push;
+
+
+// Converts a face and 2D face coordinates (0..1 range) to a position on a 3D cube (not normalized)
+vec3 CubeFacePos(int nFace, vec2 v) {
+	vec3 vPos;
+	v = clamp(v, 0.0, 1.0) * 2.0 - 1.0; // Convert from 0..1 range to -1..1 range
+	if(nFace == RightFace)
+		vPos = vec3(1.0, -v.y, -v.x);
+	else if(nFace == LeftFace)
+		vPos = vec3(-1.0, -v.y, v.x);
+	else if(nFace == TopFace)
+		vPos = vec3(v.x, 1.0, v.y);
+	else if(nFace == BottomFace)
+		vPos = vec3(v.x, -1.0, -v.y);
+	else if(nFace == FrontFace)
+		vPos = vec3(v.x, -v.y, 1.0);
+	else if(nFace == BackFace)
+		vPos = vec3(-v.x, -v.y, -1.0);
+	return vPos;
+}
+
+technique TweakPlanet {
+	state CullFace NONE;
+	state Disable DEPTH_TEST;
+	state Disable DEPTH_WRITE;
+	state Enable BLEND;
+	state BlendSrc ONE;
+	state BlendDest ONE;
+
+	layout(location=0) geom vec4 g;
+	layout(location=0) frag vec4 f;
+	layout(location=0) out vec4 outHeight;
+
+	Vertex {
+		vec2 v = vUnitSquare[iSquare[gl_VertexIndex]].xy; // Render an orthographic rect that fills the frame buffer
+		g = vec4(v * 0.5 + 0.5, gl_InstanceIndex, 1.0);
+		gl_Position = vec4(v.x, v.y, 0, 1);
+		//gl_Position.y = -gl_Position.y;
+	}
+
+	Geometry(triangles, triangle_strip, max_vertices=18) {
+		for(int l=0; l<6; l++) {
+			gl_Layer = l;
+			for(int i=0; i<3; i++) {
+				gl_Position = gl_in[i].gl_Position;
+				f = g[i];
+				EmitVertex();
+			}
+			EndPrimitive();
+		}
+	}
+
+	Fragment {
+		// If the framebuffer size is 65x65, integer coords would go from 0 .. 64
+		// We need "f" to go from 0 .. 1, but the center of each texel will cause it to go from 0.5/65.0 .. 64.5/65.0
+		vec2 coord = (f.xy - (0.5/TestWidth)) * (TestWidth/(TestWidth-1.0));
+		vec3 v = CubeFacePos(gl_Layer, coord);
+		float d = dot(normalize(push.plane.xyz), normalize(v)) + push.plane.w;
+		outHeight = vec4(d > 0 ? 1 : -1, 0, 0, 0);
+	}
+}
+
+technique PlanetFace {
+	state Enable DEPTH_TEST;
+	state Enable DEPTH_WRITE;
+	state FrontFace CCW;
+	state CullFace BACK;
+	state PolygonMode LINE;
+
+	layout(location=0) in vec4 attr0;
+	layout(location=0) geom vec4 g;
+	layout(location=1) geom vec4 vHole;
+	layout(location=2) geom vec4 gColor;
+	layout(location=0) frag vec4 fColor;
+	layout(location=0) out vec4 outColor;
+	layout(location=1) out vec4 outNormal;
+
+	Vertex {
+		int f = face[gl_InstanceIndex].iFace.x;
+		vHole = face[gl_InstanceIndex].vHole;
+		vec4 vCorners = face[gl_InstanceIndex].vCorners;
+		g = vec4(vec2((vCorners.z-vCorners.x)*attr0.x + vCorners.x, (vCorners.w-vCorners.y)*attr0.y + vCorners.y), attr0.zw);
+		vec3 pos = CubeFacePos(f, g.xy);
+		float len = length(pos);
+
+		vec2 coord = g.xy * (TestWidth-1.0)/TestWidth + (0.5/TestWidth);
+		vec4 h = texture(tex, vec3(coord.x, coord.y, f));
+		float alt = h.r*0.01;
+		gl_Position = scene.mViewProj * vec4(pos*((alt*0.01+1.0)/len), 1.0);
+		gl_Position.y = -gl_Position.y;
+
+		gColor = vec4(mod(h.a,2.0)/2.0, mod(h.a,3.0)/3.0, mod(h.a,5.0)/5.0, 1.0);
+		//gColor = h.r > 0 ? vec4(1,1,1,1) : vec4(0,0,1,1);
+		//if(h.r > 0)
+		//	gColor = gColor * clamp(alt, 0.0, 1.0);
+	}
+	Geometry(triangles, triangle_strip, max_vertices=3) {
+		int i, d=0;
+		for(i=0; i<gl_in.length(); i++) {
+			// If a single vertex is outside this cube face, discard it
+			if(g[i].x < -0.0001 || g[i].y < -0.0001 || g[0].x > 1.0001 || g[0].y > 1.0001)
+				d++;
+			// If a single vertex is inside the hole, discard it
+			if(g[i].z > vHole[i].x && g[i].z < vHole[i].z && g[i].w > vHole[i].y && g[i].w < vHole[i].w)
+				d++;
+		}
+		// If discarding 0 vertices, continue to renter the triangle
+		if(d == 0) {
+			for(i=0; i<gl_in.length(); i++) {
+				gl_Position = gl_in[i].gl_Position;
+				fColor = gColor[i];
+				EmitVertex();
+			}
+			EndPrimitive();
+		}
+	}
+	Fragment {
+		outColor = fColor;
+		outNormal = vec4(1, 1, 1, 1);
+	}
+}
+
