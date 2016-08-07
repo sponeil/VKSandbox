@@ -158,45 +158,41 @@ bool Context::create(InstanceHandle inst, WindowHandle wnd, bool val, const char
 	hWnd = wnd;
 	validate = val;
 
-	if (validate) {
-		//enabledInstanceLayers.push_back("VK_LAYER_LUNARG_standard_validation");
-		enabledInstanceExtensions.push_back("VK_EXT_debug_report");
-		//enabledDeviceLayers.push_back("VK_LAYER_LUNARG_standard_validation");
-	}
-	enabledInstanceExtensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-	enabledInstanceExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-	enabledDeviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-
 	VK_CHECK(vkEnumerateInstanceLayerProperties(&n, NULL));
 	if (n > 0) {
 		instanceLayers.resize(n);
 		VK_CHECK(vkEnumerateInstanceLayerProperties(&n, &instanceLayers[0]));
+		for (uint32_t i = 0; i < n; i++) {
+			if (validate && strcmp(instanceLayers[i].layerName, "VK_LAYER_LUNARG_standard_validation") == 0)
+				enabledInstanceLayers.push_back("VK_LAYER_LUNARG_standard_validation");
+			else if (validate && strcmp(instanceLayers[i].layerName, "VK_LAYER_LUNARG_core_validation") == 0)
+				enabledInstanceLayers.push_back("VK_LAYER_LUNARG_core_validation");
+			else if (validate && strcmp(instanceLayers[i].layerName, "VK_LAYER_LUNARG_parameter_validation") == 0)
+				enabledInstanceLayers.push_back("VK_LAYER_LUNARG_parameter_validation");
+		}
 	}
 
+	bool surface_extension = false, os_surface_extension = false;
 	VK_CHECK(vkEnumerateInstanceExtensionProperties(NULL, &n, NULL));
 	if (n > 0) {
 		instanceExtensions.resize(n);
 		VK_CHECK(vkEnumerateInstanceExtensionProperties(NULL, &n, &instanceExtensions[0]));
-	}
-
-	for (size_t i = 0; i < enabledInstanceLayers.size(); i++) {
-		bool found = false;
-		for (size_t j = 0; !found && j < instanceLayers.size(); j++) {
-			if (strcmp(instanceLayers[j].layerName, enabledInstanceLayers[i]) == 0)
-				found = true;
+		for (uint32_t i = 0; i < n; i++) {
+			if (strcmp(instanceExtensions[i].extensionName, VK_KHR_SURFACE_EXTENSION_NAME) == 0) {
+				enabledInstanceExtensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+				surface_extension = true;
+			} else if (strcmp(instanceExtensions[i].extensionName, VK_KHR_WIN32_SURFACE_EXTENSION_NAME) == 0) {
+				enabledInstanceExtensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+				os_surface_extension = true;
+			} else if (validate && strcmp(instanceExtensions[i].extensionName, VK_EXT_DEBUG_REPORT_EXTENSION_NAME) == 0) {
+				enabledInstanceExtensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+			}
 		}
-		if (!found)
-			VKLogException("Unsupported instance layer: %s", enabledInstanceLayers[i]);
 	}
-	for (size_t i = 0; i < enabledInstanceExtensions.size(); i++) {
-		bool found = false;
-		for (size_t j = 0; !found && j < instanceExtensions.size(); j++) {
-			if (strcmp(instanceExtensions[j].extensionName, enabledInstanceExtensions[i]) == 0)
-				found = true;
-		}
-		if (!found)
-			VKLogException("Unsupported instance extension: %s", enabledInstanceExtensions[i]);
-	}
+	if (!surface_extension)
+		VKLogException("Unable to find OS-independent surface extension on physical device!");
+	if (!os_surface_extension)
+		VKLogException("Unable to find OS-specific surface extension on physical device!");
 
 	InstanceCreateInfo instInfo(appName, &enabledInstanceLayers, &enabledInstanceExtensions);
 	instInfo.appInfo.apiVersion = nVersion;
@@ -213,6 +209,8 @@ bool Context::create(InstanceHandle inst, WindowHandle wnd, bool val, const char
 
 	std::vector<VkPhysicalDevice> physicalDevices;
 	VK_CHECK(vkEnumeratePhysicalDevices(instance, &n, NULL));
+	if (n <= 0)
+		VKLogException("No Vulkan physical devices found!");
 	physicalDevices.resize(n);
 	VK_CHECK(vkEnumeratePhysicalDevices(instance, &n, &physicalDevices[0]));
 	physicalDevice = physicalDevices[0];
@@ -221,32 +219,28 @@ bool Context::create(InstanceHandle inst, WindowHandle wnd, bool val, const char
 	if (n > 0) {
 		deviceLayers.resize(n);
 		VK_CHECK(vkEnumerateDeviceLayerProperties(physicalDevice, &n, &deviceLayers[0]));
+		for (uint32_t i = 0; i < n; i++) {
+			if (validate && strcmp(deviceLayers[i].layerName, "VK_LAYER_LUNARG_standard_validation") == 0)
+				enabledDeviceLayers.push_back("VK_LAYER_LUNARG_standard_validation");
+		}
 	}
 
+	bool swapchain_extension = false;
 	VK_CHECK(vkEnumerateDeviceExtensionProperties(physicalDevice, NULL, &n, NULL));
 	if (n > 0) {
 		deviceExtensions.resize(n);
 		VK_CHECK(vkEnumerateDeviceExtensionProperties(physicalDevice, NULL, &n, &deviceExtensions[0]));
-	}
-
-	for (size_t i = 0; i < enabledDeviceLayers.size(); i++) {
-		bool found = false;
-		for (size_t j = 0; !found && j < deviceLayers.size(); j++) {
-			if (strcmp(deviceLayers[j].layerName, enabledDeviceLayers[i]) == 0)
-				found = true;
+		for (uint32_t i = 0; i < n; i++) {
+			if (strcmp(deviceExtensions[i].extensionName, VK_KHR_SWAPCHAIN_EXTENSION_NAME) == 0) {
+				enabledDeviceExtensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+				swapchain_extension = true;
+			} else if (strcmp(deviceExtensions[i].extensionName, VK_NV_GLSL_SHADER_EXTENSION_NAME) == 0) {
+				enabledDeviceExtensions.push_back(VK_NV_GLSL_SHADER_EXTENSION_NAME);
+			}
 		}
-		if (!found)
-			VKLogException("Unsupported device layer: %s", enabledDeviceLayers[i]);
 	}
-	for (size_t i = 0; i < enabledDeviceExtensions.size(); i++) {
-		bool found = false;
-		for (size_t j = 0; !found && j < deviceExtensions.size(); j++) {
-			if (strcmp(deviceExtensions[j].extensionName, enabledDeviceExtensions[i]) == 0)
-				found = true;
-		}
-		if (!found)
-			VKLogException("Unsupported device extension: %s", enabledDeviceExtensions[i]);
-	}
+	if (!swapchain_extension)
+		VKLogException("Unable to find swapchain extension!");
 
 	vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &n, NULL);
 	queueFamilies.resize(n);

@@ -10,7 +10,7 @@
 namespace VK {
 
 //#define THROW_EXCEPTION // Comment out if you don't want logException to throw the message
-const int LOGGER_BUFFER_SIZE = 16384;
+const int LOGGER_BUFFER_SIZE = 65536;
 
 /// A simple but very efficient and powerful logging class.
 /// Its primary design goal is to have zero overhead for logging levels that

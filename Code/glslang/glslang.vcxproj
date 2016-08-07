@@ -50,6 +50,7 @@
     <ClCompile Include="glslang\OSDependent\Windows\ossource.cpp" />
     <ClCompile Include="hlsl\hlslGrammar.cpp" />
     <ClCompile Include="hlsl\hlslOpMap.cpp" />
+    <ClCompile Include="hlsl\hlslParseables.cpp" />
     <ClCompile Include="hlsl\hlslParseHelper.cpp" />
     <ClCompile Include="hlsl\hlslScanContext.cpp" />
     <ClCompile Include="hlsl\hlslTokenStream.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="glslang\MachineIndependent\Versions.h" />
     <ClInclude Include="hlsl\hlslGrammar.h" />
     <ClInclude Include="hlsl\hlslOpMap.h" />
+    <ClInclude Include="hlsl\hlslParseables.h" />
     <ClInclude Include="hlsl\hlslParseHelper.h" />
     <ClInclude Include="hlsl\hlslScanContext.h" />
     <ClInclude Include="hlsl\hlslTokens.h" />

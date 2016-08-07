@@ -1,5 +1,5 @@
 //
-//Copyright (C) 2016 Google, Inc.
+//Copyright (C) 2016 LunarG, Inc.
 //
 //All rights reserved.
 //
@@ -15,7 +15,7 @@
 //    disclaimer in the documentation and/or other materials provided
 //    with the distribution.
 //
-//    Neither the name of Google, Inc., nor the names of its
+//    Neither the name of 3Dlabs Inc. Ltd. nor the names of its
 //    contributors may be used to endorse or promote products derived
 //    from this software without specific prior written permission.
 //
@@ -33,74 +33,32 @@
 //POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include "hlslTokenStream.h"
+#ifndef _HLSLPARSEABLES_INCLUDED_
+#define _HLSLPARSEABLES_INCLUDED_
+
+#include "../glslang/MachineIndependent/Initialize.h"
 
 namespace glslang {
 
-void HlslTokenStream::pushPreToken(const HlslToken& tok)
-{
-    assert(preTokenStackSize == 0);
-    preTokenStack = tok;
-    ++preTokenStackSize;
-}
+//
+// This is an HLSL specific derivation of TBuiltInParseables.  See comment
+// above TBuiltInParseables for details.
+//
+class TBuiltInParseablesHlsl : public TBuiltInParseables {
+public:
+    POOL_ALLOCATOR_NEW_DELETE(GetThreadPoolAllocator())
+    TBuiltInParseablesHlsl();
+    void initialize(int version, EProfile, const SpvVersion& spvVersion);
+    void initialize(const TBuiltInResource& resources, int version, EProfile, const SpvVersion& spvVersion, EShLanguage);
 
-HlslToken HlslTokenStream::popPreToken()
-{
-    assert(preTokenStackSize == 1);
-    --preTokenStackSize;
+    void identifyBuiltIns(int version, EProfile profile, const SpvVersion& spvVersion, EShLanguage language, TSymbolTable& symbolTable);
+    
+    void identifyBuiltIns(int version, EProfile profile, const SpvVersion& spvVersion, EShLanguage language, TSymbolTable& symbolTable, const TBuiltInResource &resources);
 
-    return preTokenStack;
-}
-
-void HlslTokenStream::pushTokenBuffer(const HlslToken& tok)
-{
-    tokenBuffer = tok;
-}
-
-HlslToken HlslTokenStream::popTokenBuffer()
-{
-    return tokenBuffer;
-}
-
-// Load 'token' with the next token in the stream of tokens.
-void HlslTokenStream::advanceToken()
-{
-    pushTokenBuffer(token);
-    if (preTokenStackSize > 0)
-        token = popPreToken();
-    else
-        scanner.tokenize(token);
-}
-
-void HlslTokenStream::recedeToken()
-{
-    pushPreToken(token);
-    token = popTokenBuffer();
-}
-
-// Return the current token class.
-EHlslTokenClass HlslTokenStream::peek() const
-{
-    return token.tokenClass;
-}
-
-// Return true, without advancing to the next token, if the current token is
-// the expected (passed in) token class.
-bool HlslTokenStream::peekTokenClass(EHlslTokenClass tokenClass) const
-{
-    return peek() == tokenClass;
-}
-
-// Return true and advance to the next token if the current token is the
-// expected (passed in) token class.
-bool HlslTokenStream::acceptTokenClass(EHlslTokenClass tokenClass)
-{
-    if (peekTokenClass(tokenClass)) {
-        advanceToken();
-        return true;
-    }
-
-    return false;
-}
+private:
+    void createMatTimesMat();
+};
 
 } // end namespace glslang
+
+#endif // _HLSLPARSEABLES_INCLUDED_

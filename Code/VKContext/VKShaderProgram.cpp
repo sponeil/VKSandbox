@@ -128,10 +128,30 @@ void ShaderProgram::setStage(ShaderStage s, const char *glsl, const char *entry)
 	dirty = true;
 }
 
+bool LaunchAndWait(const char *pszCommand, const char *pszWorkingFolder, DWORD dwFlags, DWORD dwExpectedExitCode, WORD nShow) {
+	//TMLogDebug("LaunchAndWait(%s)", pszCommand);
+	PROCESS_INFORMATION pi;
+	STARTUPINFO si;
+	memset(&si, 0, sizeof(STARTUPINFO));
+	si.cb = sizeof(STARTUPINFO);
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = nShow;
+	if (!CreateProcess(NULL, (char *)pszCommand, NULL, NULL, NULL, dwFlags, NULL, pszWorkingFolder, &si, &pi))
+		return false;
+	WaitForSingleObject(pi.hProcess, INFINITE);
+	DWORD dwExitCode = 0;
+	if (!GetExitCodeProcess(pi.hProcess, &dwExitCode) || dwExitCode != dwExpectedExitCode)
+		return false;
+	CloseHandle(pi.hThread);
+	CloseHandle(pi.hProcess);
+	return true;
+}
+
 bool ShaderProgram::compile(const char *name) {
 	EShMessages messages = (EShMessages)(EShMsgSpvRules | EShMsgVulkanRules);
 	glslang::TProgram program;
 	const char *stageNames[StageCount] = {"Vertex", "TessControl", "TessEvaluation", "Geometry", "Fragment", "Compute"};
+	const char *extensions[StageCount] = { "vert", "tesc", "tese", "geom", "frag", "comp" };
 	glslang::TShader tShaders[EShLangCount] = {
 		glslang::TShader(EShLangVertex),
 		glslang::TShader(EShLangTessControl),
@@ -141,10 +161,20 @@ bool ShaderProgram::compile(const char *name) {
 		glslang::TShader(EShLangCompute)
 	};
 
+	char szCommand[1024];
 	const char *psz = NULL;
+	sprintf(szCommand, "C:\\VulkanSDK\\1.0.21.1\\Bin\\glslangValidator -V ");
 	for (int i = 0; i < EShLangCount; i++) {
 		if (stages[i].glsl.empty())
 			continue;
+
+		VK::Path pGLSL = VK::Path::Shader().add("temp.%s", extensions[i]);
+		strcat(szCommand, " ");
+		strcat(szCommand, pGLSL.basename().c_str());
+		std::ofstream os(pGLSL, std::ios::binary);
+		os << stages[i].glsl;
+		os.close();
+
 		psz = stages[i].glsl.c_str();
 		tShaders[i].setStrings(&psz, 1);
 		if (!stages[i].entry.empty())
@@ -172,6 +202,8 @@ bool ShaderProgram::compile(const char *name) {
 		return false;
 	}
 
+	LaunchAndWait(szCommand, VK::Path::Shader(), 0, 0, SW_HIDE);
+
 	for (int i = 0; i < EShLangCount; i++) {
 		stages[i].spirv.clear();
 		if (stages[i].module) {
@@ -181,9 +213,18 @@ bool ShaderProgram::compile(const char *name) {
 		glslang::TIntermediate *intermediate = program.getIntermediate((EShLanguage)i);
 		if (intermediate) {
 			glslang::GlslangToSpv(*intermediate, stages[i].spirv);
+
+			VK::Path p = VK::Path::Shader().add("%s.spv", extensions[i]);
+			std::string str = p.read();
+			std::vector<uint32_t> spirv;
+			spirv.resize(str.size() / 4);
+			memcpy(&spirv[0], str.c_str(), str.size());
+			if (spirv.size() != stages[i].spirv.size() || memcmp(&spirv[0], &stages[i].spirv[0], spirv.size() * 4) != 0)
+				VKLogWarning("glslangValidator mismatch!");
+
 			std::ostringstream ostr;
 			spv::Disassemble(ostr, stages[i].spirv);
-			VKLogSpam("%s stage dissassembly for program: %s\n%s", stageNames[i], name, ostr.str().c_str());
+			VKLogDebug("%s stage dissassembly for program: %s\n%s", stageNames[i], name, ostr.str().c_str());
 			ShaderModuleCreateInfo shader(stages[i].spirv);
 			OBJ_CHECK(vkCreateShaderModule(vk, &shader, nullptr, &stages[i].module));
 		}

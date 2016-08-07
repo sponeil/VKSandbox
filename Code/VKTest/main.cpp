@@ -130,15 +130,6 @@ public:
 
 		faceBuffer.create(sizeof(faceData), manager.getDescriptorPool());
 
-		iHeightHost.createTexture(
-			VK_FORMAT_R32G32B32A32_SFLOAT,
-			VK_IMAGE_TILING_LINEAR,
-			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
-			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-			TestWidth, TestWidth, 1,
-			VK_IMAGE_LAYOUT_PREINITIALIZED, // Need to keep the contents of this when we change layouts
-			6
-		);
 		iHeight.createTexture(
 			VK_FORMAT_R32G32B32A32_SFLOAT,
 			VK_IMAGE_TILING_OPTIMAL, // Can't use linear with device-local texture arrays
@@ -148,8 +139,47 @@ public:
 			VK_IMAGE_LAYOUT_UNDEFINED, // Don't need to keep the contents of this when we change layouts
 			6
 		);
-		iHeight.createDescriptor(manager.getDescriptorPool());
+		iHeightHost.createTexture(
+			VK_FORMAT_R32G32B32A32_SFLOAT,
+			VK_IMAGE_TILING_LINEAR,
+			VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
+			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+			TestWidth, TestWidth, 1,
+			VK_IMAGE_LAYOUT_PREINITIALIZED, // Need to keep the contents of this when we change layouts
+			1 // My ATI allowed 6 layers here, but not my nVidia
+		);
 
+#if 1 // Can't do this if it's not linear
+		iHeightHost.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_GENERAL);
+		iHeight.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+
+		uint8_t *data = NULL;
+		VkImageSubresource subres = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0 };
+		VkSubresourceLayout sublayout;
+		for (int face = 0; face < 6; face++) {
+			//subres.arrayLayer = face;
+			vkGetImageSubresourceLayout(vk, iHeightHost, &subres, &sublayout);
+			if (VK_SUCCESS == vkMapMemory(vk, iHeightHost, sublayout.offset, sublayout.size, 0, (void **)&data)) {
+				for (int y = 0; y < pbHeight[face].getHeight(); y++) {
+					float *src = pbHeight[face](0, y);
+					memcpy(data, src, pbHeight[face].getWidth() * pbHeight[face].getChannels() * 4);
+					data += sublayout.rowPitch;
+				}
+				vkUnmapMemory(vk, iHeightHost);
+			}
+			VK::ImageCopy copy_region(TestWidth, TestWidth);
+			copy_region.dstSubresource.baseArrayLayer = face;
+			iHeightHost.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+			vkCmdCopyImage(vk, iHeightHost, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, iHeight, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copy_region);
+			iHeightHost.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
+			vk.flush();
+		}
+		iHeight.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
+#endif
+
+		this->onSize(m_nWidth, m_nHeight);
+
+		iHeight.createDescriptor(manager.getDescriptorPool());
 		std::vector<VK::Image*> planetImages = { &iHeight };
 		planetPass.create(planetImages, NULL, VK_ATTACHMENT_LOAD_OP_LOAD);
 		VK::ShaderTechnique *pPlanet = manager.getTechnique("TweakPlanet");
@@ -165,34 +195,6 @@ public:
 			vkCreatePipelineLayout(vk, &pipelineLayoutInfo, NULL, &sceneOnlyLayout);
 			pPlanet->buildPipeline(planetPass, sceneOnlyLayout);
 		}
-
-#if 1 // Can't do this if it's not linear
-		uint8_t *data = NULL;
-		VkImageSubresource subres = { VK_IMAGE_ASPECT_COLOR_BIT, 0, 0 };
-		VkSubresourceLayout sublayout;
-		for (int face = 0; face < 6; face++) {
-			subres.arrayLayer = face;
-			vkGetImageSubresourceLayout(vk, iHeightHost, &subres, &sublayout);
-			if (VK_SUCCESS == vkMapMemory(vk, iHeightHost, sublayout.offset, sublayout.size, 0, (void **)&data)) {
-				for (int y = 0; y < pbHeight[face].getHeight(); y++) {
-					float *src = pbHeight[face](0, y);
-					memcpy(data, src, pbHeight[face].getWidth() * pbHeight[face].getChannels() * 4);
-					data += sublayout.rowPitch;
-				}
-				vkUnmapMemory(vk, iHeightHost);
-			}
-		}
-		iHeightHost.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_PREINITIALIZED, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
-		iHeight.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
-
-		VK::ImageCopy copy_region(TestWidth, TestWidth);
-		copy_region.srcSubresource.layerCount = 6;
-		copy_region.dstSubresource.layerCount = 6;
-		vkCmdCopyImage(vk, iHeightHost, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL, iHeight, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &copy_region);
-
-		iHeight.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
-		vk.flush();
-#endif
 
 		// Build the vertex array
 		std::vector<VK::vec4> vertices(NodeEdge*NodeEdge);

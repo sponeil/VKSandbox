@@ -153,6 +153,9 @@
     <ClCompile Include="hlsl\hlslTokenStream.cpp">
       <Filter>hlsl</Filter>
     </ClCompile>
+    <ClCompile Include="hlsl\hlslParseables.cpp">
+      <Filter>hlsl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hlsl\hlslGrammar.h">
@@ -243,6 +246,9 @@
       <Filter>hlsl</Filter>
     </ClInclude>
     <ClInclude Include="hlsl\hlslTokenStream.h">
+      <Filter>hlsl</Filter>
+    </ClInclude>
+    <ClInclude Include="hlsl\hlslParseables.h">
       <Filter>hlsl</Filter>
     </ClInclude>
   </ItemGroup>
