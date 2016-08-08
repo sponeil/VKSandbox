@@ -1,7 +1,5 @@
 // GLManager.h
 //
-#define MAX_GUI_INSTANCES 1000   // Max number of GUI object instances per render pass
-#define MAX_TEXT_INSTANCES 1000  // Max number of text character instances per render pass
 
 struct SceneData {
 	// Shared viewport settings (generally remains static during each render pass)
@@ -24,3 +22,4 @@ struct TextData {
 	vec4 vCharPos;
 	vec4 vCharColor;
 };
+

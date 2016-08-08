@@ -85,7 +85,7 @@ public:
 	operator VkDescriptorSet() const { return descriptorSet; }
 
 	void create(VkDeviceSize size, VkDescriptorPool pool = NULL, VkShaderStageFlags flags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT) {
-		BufferObject::create(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, size);
+		BufferObject::create(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, size);
 
 		if (pool && flags != 0) {
 			descriptorInfo.buffer = *this;

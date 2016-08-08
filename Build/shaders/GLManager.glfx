@@ -16,12 +16,12 @@ layout(std140, set=0, binding=0) uniform SceneBuffer {
 	SceneData scene;
 };
 
-layout(std140, set=1, binding=0) uniform GUIBuffer {
-	GUIData gui[MAX_GUI_INSTANCES];
+layout(std140, set=1, binding=0) buffer GUIBuffer {
+	GUIData gui[]; // buffer has a higher size limit than uniform
 };
 
-layout(std140, set=2, binding=0) uniform TextBuffer {
-	TextData text[MAX_TEXT_INSTANCES];
+layout(std140, set=2, binding=0) buffer TextBuffer {
+	TextData text[]; // buffer has a higher size limit than uniform
 };
 
 

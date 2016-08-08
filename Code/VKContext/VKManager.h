@@ -20,6 +20,7 @@
 namespace VK {
 
 #include "../../Build/shaders/GLManager.h"
+#define MAX_GUI_INSTANCES 10000
 
 /// Provides a simple management layer for loading Vulkan shaders and fonts.
 /// It also manages the scene, gui, and text uniform buffers and GUI rendering calls.
