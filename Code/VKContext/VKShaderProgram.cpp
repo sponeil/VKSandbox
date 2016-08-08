@@ -128,6 +128,7 @@ void ShaderProgram::setStage(ShaderStage s, const char *glsl, const char *entry)
 	dirty = true;
 }
 
+#ifdef _WIN32
 bool LaunchAndWait(const char *pszCommand, const char *pszWorkingFolder, DWORD dwFlags, DWORD dwExpectedExitCode, WORD nShow) {
 	//TMLogDebug("LaunchAndWait(%s)", pszCommand);
 	PROCESS_INFORMATION pi;
@@ -146,6 +147,7 @@ bool LaunchAndWait(const char *pszCommand, const char *pszWorkingFolder, DWORD d
 	CloseHandle(pi.hProcess);
 	return true;
 }
+#endif
 
 bool ShaderProgram::compile(const char *name) {
 	EShMessages messages = (EShMessages)(EShMsgSpvRules | EShMsgVulkanRules);
@@ -161,19 +163,24 @@ bool ShaderProgram::compile(const char *name) {
 		glslang::TShader(EShLangCompute)
 	};
 
+//#define glslangValidator "C:\\VulkanSDK\\1.0.21.1\\Bin\\glslangValidator.exe"
+#ifdef glslangValidator
 	char szCommand[1024];
+	sprintf(szCommand, glslangValidator " -V");
+#endif
 	const char *psz = NULL;
-	sprintf(szCommand, "C:\\VulkanSDK\\1.0.21.1\\Bin\\glslangValidator -V ");
 	for (int i = 0; i < EShLangCount; i++) {
 		if (stages[i].glsl.empty())
 			continue;
 
+#ifdef glslangValidator
 		VK::Path pGLSL = VK::Path::Shader().add("temp.%s", extensions[i]);
 		strcat(szCommand, " ");
 		strcat(szCommand, pGLSL.basename().c_str());
 		std::ofstream os(pGLSL, std::ios::binary);
 		os << stages[i].glsl;
 		os.close();
+#endif
 
 		psz = stages[i].glsl.c_str();
 		tShaders[i].setStrings(&psz, 1);
@@ -202,7 +209,9 @@ bool ShaderProgram::compile(const char *name) {
 		return false;
 	}
 
+#ifdef glslangValidator
 	LaunchAndWait(szCommand, VK::Path::Shader(), 0, 0, SW_HIDE);
+#endif
 
 	for (int i = 0; i < EShLangCount; i++) {
 		stages[i].spirv.clear();
@@ -214,6 +223,7 @@ bool ShaderProgram::compile(const char *name) {
 		if (intermediate) {
 			glslang::GlslangToSpv(*intermediate, stages[i].spirv);
 
+#ifdef glslangValidator
 			VK::Path p = VK::Path::Shader().add("%s.spv", extensions[i]);
 			std::string str = p.read();
 			std::vector<uint32_t> spirv;
@@ -221,6 +231,7 @@ bool ShaderProgram::compile(const char *name) {
 			memcpy(&spirv[0], str.c_str(), str.size());
 			if (spirv.size() != stages[i].spirv.size() || memcmp(&spirv[0], &stages[i].spirv[0], spirv.size() * 4) != 0)
 				VKLogWarning("glslangValidator mismatch!");
+#endif
 
 			std::ostringstream ostr;
 			spv::Disassemble(ostr, stages[i].spirv);

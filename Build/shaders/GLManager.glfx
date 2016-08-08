@@ -4,7 +4,7 @@
 // languages. It was designed and written by Sean O'Neil, who disclaims
 // any copyright to release it in the public domain.
 //
-#version 400
+#version 440 core
 #extension GL_ARB_separate_shader_objects : enable
 #extension GL_ARB_shading_language_420pack : enable
 

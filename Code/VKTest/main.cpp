@@ -177,8 +177,6 @@ public:
 		iHeight.setLayout(VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_GENERAL);
 #endif
 
-		this->onSize(m_nWidth, m_nHeight);
-
 		iHeight.createDescriptor(manager.getDescriptorPool());
 		std::vector<VK::Image*> planetImages = { &iHeight };
 		planetPass.create(planetImages, NULL, VK_ATTACHMENT_LOAD_OP_LOAD);
@@ -193,7 +191,7 @@ public:
 			pipelineLayoutInfo.pushConstantRangeCount = 1;
 			pipelineLayoutInfo.pPushConstantRanges = push_constant_ranges;
 			vkCreatePipelineLayout(vk, &pipelineLayoutInfo, NULL, &sceneOnlyLayout);
-			pPlanet->buildPipeline(planetPass, sceneOnlyLayout);
+			//pPlanet->buildPipeline(planetPass, sceneOnlyLayout);
 		}
 
 		// Build the vertex array
@@ -367,9 +365,9 @@ public:
 		guiPass.create(guiImages, &depth, VK_ATTACHMENT_LOAD_OP_LOAD, VK_ATTACHMENT_LOAD_OP_LOAD);
 
 		manager.reinit(guiPass, nWidth, nHeight);
-		VK::ShaderTechnique *pPlanet = manager.getTechnique("TweakPlanet");
-		if (pPlanet)
-			pPlanet->buildPipeline(planetPass, sceneOnlyLayout);
+		//VK::ShaderTechnique *pPlanet = manager.getTechnique("TweakPlanet");
+		//if (pPlanet)
+		//	pPlanet->buildPipeline(planetPass, sceneOnlyLayout);
 
 		VK::ShaderTechnique *pPlanetFace = manager.getTechnique("PlanetFace");
 		if(pPlanetFace)
@@ -524,6 +522,7 @@ public:
 
 		VK::ShaderTechnique *p;
 
+/*
 		if (m_bUpdate && (p = manager.getTechnique("TweakPlanet")) != NULL) {
 			VK::Plane plane;
 			VK::vec3 normal(real_random(gen), real_random(gen), real_random(gen));
@@ -545,6 +544,7 @@ public:
 			vkCmdDraw(vk, 6, 1, 0, 0);
 			vkCmdEndRenderPass(vk);
 		}
+*/
 		vk.flush();
 
 		std::vector<VkClearValue> clearValues = { { 0.0f, 0.1f, 0.0f, 0.0f },{ 0.0f, 0.0f, 0.0f, 0.0f },{ 1.0f, 0 } };
