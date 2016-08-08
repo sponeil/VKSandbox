@@ -23,13 +23,19 @@ void Manager::init() {
 	if(!loadFont("arial1"))
 		VKLogException("Failed to load arial font!");
 
-	VkDescriptorPoolSize typeCounts[] = { { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 10 },{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 10 },{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 10 } };
-	VK::DescriptorPoolCreateInfo poolInfo(typeCounts, 3);
+	VkDescriptorPoolSize typeCounts[] = {
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 10 },
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 10 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 10 },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 10 },
+		{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 10 }
+	};
+	VK::DescriptorPoolCreateInfo poolInfo(typeCounts, 5);
 	OBJ_CHECK(vkCreateDescriptorPool(vk, &poolInfo, NULL, &descriptorPool));
 
 	sceneBuffer.create(sizeof(scene), descriptorPool);
-	guiBuffer.create(sizeof(gui), descriptorPool);
-	textBuffer.create(sizeof(text), descriptorPool);
+	guiBuffer.create(sizeof(gui), descriptorPool, VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, VK_SHADER_STAGE_VERTEX_BIT);
+	textBuffer.create(sizeof(text), descriptorPool, VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, VK_SHADER_STAGE_VERTEX_BIT);
 
 	VkDescriptorSetLayout layouts[] = { sceneBuffer, guiBuffer, textBuffer };
 	VK::PipelineLayoutCreateInfo pipelineLayoutInfo(layouts, 3);

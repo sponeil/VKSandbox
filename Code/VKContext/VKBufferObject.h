@@ -33,7 +33,7 @@ public:
 	operator VkBuffer() const { return buffer; }
 	operator VkDeviceMemory() const { return mem; }
 
-	void create(VkBufferUsageFlags usage, VkDeviceSize size) {
+	void create(VkBufferUsageFlags usage, VkDeviceSize size, VkDescriptorPool pool = NULL, VkShaderStageFlags flags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT) {
 		this->size = size;
 		BufferCreateInfo info(size, usage);
 		OBJ_CHECK(vkCreateBuffer(vk, &info, NULL, &buffer));
@@ -59,6 +59,7 @@ public:
 
 class UniformBuffer : public BufferObject {
 private:
+	VkDescriptorType descriptorType;
 	VkDescriptorBufferInfo descriptorInfo;
 	VkDescriptorSetLayout descriptorSetLayout;
 	VkDescriptorSet descriptorSet;
@@ -84,22 +85,25 @@ public:
 	operator VkDescriptorSetLayout() const { return descriptorSetLayout; }
 	operator VkDescriptorSet() const { return descriptorSet; }
 
-	void create(VkDeviceSize size, VkDescriptorPool pool = NULL, VkShaderStageFlags flags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT) {
-		BufferObject::create(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, size);
+	void create(VkDeviceSize size, VkDescriptorPool pool = NULL, VkBufferUsageFlags usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VkShaderStageFlags flags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT) {
+		BufferObject::create(usage, size);
 
 		if (pool && flags != 0) {
 			descriptorInfo.buffer = *this;
 			descriptorInfo.offset = 0;
 			descriptorInfo.range = size;
 
-			DescriptorSetLayoutBinding binding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, flags);
+			descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+			if(usage & VK_BUFFER_USAGE_STORAGE_BUFFER_BIT)
+				descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+			DescriptorSetLayoutBinding binding(0, descriptorType, 1, flags);
 			DescriptorSetLayoutCreateInfo layoutInfo(&binding, 1);
 			OBJ_CHECK(vkCreateDescriptorSetLayout(vk, &layoutInfo, NULL, &descriptorSetLayout));
 
 			VK::DescriptorSetAllocateInfo setInfo(pool, &descriptorSetLayout);
 			OBJ_CHECK(vkAllocateDescriptorSets(vk, &setInfo, &descriptorSet));
 
-			WriteDescriptorSet write(descriptorSet, &descriptorInfo);
+			WriteDescriptorSet write(descriptorSet, &descriptorInfo, descriptorType);
 			vkUpdateDescriptorSets(vk, 1, &write, 0, NULL);
 		}
 	}

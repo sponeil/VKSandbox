@@ -756,26 +756,26 @@ struct DescriptorSetAllocateInfo : public VkDescriptorSetAllocateInfo {
 };
 
 struct WriteDescriptorSet : public VkWriteDescriptorSet {
-	WriteDescriptorSet(VkDescriptorSet set, VkDescriptorBufferInfo *pInfo, uint32_t b=0) {
+	WriteDescriptorSet(VkDescriptorSet set, VkDescriptorBufferInfo *pInfo, VkDescriptorType type=VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, uint32_t b=0) {
 		sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		pNext = NULL;
 		dstSet = set;
 		dstBinding = b;
 		dstArrayElement = 0;
 		descriptorCount = 1;
-		descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+		descriptorType = type;
 		pImageInfo = NULL;
 		pBufferInfo = pInfo;
 		pTexelBufferView = NULL;
 	}
-	WriteDescriptorSet(VkDescriptorSet set, VkDescriptorImageInfo *pInfo, uint32_t b = 0) {
+	WriteDescriptorSet(VkDescriptorSet set, VkDescriptorImageInfo *pInfo, VkDescriptorType type= VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, uint32_t b = 0) {
 		sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		pNext = NULL;
 		dstSet = set;
 		dstBinding = b;
 		dstArrayElement = 0;
 		descriptorCount = 1;
-		descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+		descriptorType = type;
 		pImageInfo = pInfo;
 		pBufferInfo = NULL;
 		pTexelBufferView = NULL;
